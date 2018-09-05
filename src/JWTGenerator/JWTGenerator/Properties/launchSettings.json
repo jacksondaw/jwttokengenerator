@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "JWTGenerator": {
+      "commandName": "Project",
+      "commandLineArgs": "file -p \"C:\\Users\\jdawson\\certs\\private_key.pem\" -i \"http://dev.usa.cloud.watchguard.com\" -a \"WatchGuardIdAPI\" "
+    }
+  }
+}
