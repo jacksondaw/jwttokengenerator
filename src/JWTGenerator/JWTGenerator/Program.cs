@@ -52,14 +52,14 @@ namespace JWTGenerator
         {
             try
             {
-                string token = string.Empty;
+                SecurityKey key = null;
+                OptionsBase options = null;
 
                 Parser.Default.ParseArguments<ThumbprintOptions, FileOptions>(args)
                     .WithParsed<ThumbprintOptions>(o =>
                     {
-
-                        var key = GetPrivateKey(o.Thumbprint);
-                        token = GetToken(o, key);
+                        options = o;
+                         key = GetPrivateKey(o.Thumbprint);
                     })
                     .WithParsed<FileOptions>(o =>
                     {
@@ -67,15 +67,15 @@ namespace JWTGenerator
                         {
                             throw new FileNotFoundException($"File {o.PrivateKeyPath} was not found.");
                         }
-                        
-                        var key = GetPrivateKey(o.PrivateKeyPath);
 
-                        token = GetToken(o, key);
+                        options = o;
+                        key = GetPrivateKey(o.PrivateKeyPath);
                     });
 
-                if (!string.IsNullOrEmpty(token))
+                if (options != null && key != null)
                 {
-                    Console.WriteLine($"{Environment.NewLine}{token}{Environment.NewLine}");
+                    var token = GetToken(options, key);
+                    Console.WriteLine($"{Environment.NewLine}bearer {token}{Environment.NewLine}");
                 }
             }
             catch (Exception ex)
@@ -92,7 +92,7 @@ namespace JWTGenerator
         {
             var creds = new SigningCredentials(key, SecurityAlgorithms.RsaSha256);
             var handler = new JwtSecurityTokenHandler();
-            var jwtToken = new JwtSecurityToken(issuer: o.Issuer, audience: o.Audience, claims: null, signingCredentials: creds);
+            var jwtToken = new JwtSecurityToken(issuer: o.Issuer, audience: o.Audience, claims: null, signingCredentials: creds, expires: DateTime.Now.AddYears(1));
 
             return handler.WriteToken(jwtToken);
 
