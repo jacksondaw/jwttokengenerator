@@ -4,8 +4,7 @@
  
  Execute the following in and elevated Powershell prompt to create a new Self Signed RSA Certficate
 
- New-SelfSignedCertificate -Type Custom -Subject "CN=FirstName LastName,OU=UserAccounts,DC=org,DC=company,DC=com" -KeyUsage DigitalSignature -KeyAlgorithm RSA -KeyLength 2048 -CertStoreLocation "Cert:\CurrentUser\My"
-
+ New-SelfSignedCertificate -Type Custom -Subject "CN=FirstName LastName,OU=UserAccounts,DC=org,DC=company,DC=com" -KeyUsage DigitalSignature -KeyAlgorithm RSA -KeyLength 2048 -CertStoreLocation "Cert:\LocalMachine\My" -FriendlyName "Development" -KeyExportPolicy Exportable -Provider "Microsoft Enhanced RSA and AES Cryptographic Provider" -TextExtension @("2.5.29.37={text}1.3.6.1.5.5.7.3.1")
 
 ## Creating RSA with OpenSSL
 
